@@ -9,11 +9,11 @@ import java.nio.charset.StandardCharsets;
 
 public class TaskRepo {
   public String getTask() throws IOException {
-    String filter = "!(@Routine) & !(no date) & !##Clients & !##Freelancing &  !##University & !(@Work)";
+    String filter = "!(@Routine) & today & !##Clients & !##Freelancing &  !##University & !(@Work)";
     // String filter = "today";
     String encodedFilter = URLEncoder.encode(filter, StandardCharsets.UTF_8.toString());
 
-    URL url = new URL("https://api.todoist.com/rest/v2/tasks?filter=" + filter);
+    URL url = new URL("https://api.todoist.com/rest/v2/tasks?filter=" + encodedFilter);
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     connection.setRequestMethod("GET");
 
@@ -27,7 +27,7 @@ public class TaskRepo {
     String responseLine = bufferedReader.readLine();
     while (responseLine != null) {
       responseBuilder.append(responseLine);
-      responseBuilder.append('\r');
+      responseLine = bufferedReader.readLine();
     }
 
     bufferedReader.close();
