@@ -6,9 +6,12 @@ public class Main extends MetaClass {
   }
 
   public static void main(String[] args) throws IOException {
-    System.out.println("Hello!");
     TaskRepo taskRepo = new TaskRepo();
-    String response = taskRepo.getTask();
-    System.out.println(response);
+    Task[] tasks = taskRepo.getTasks();
+
+    for (int index = 0; index < tasks.length; index++) {
+      Task task = tasks[index];
+      System.out.println(task.name);
+    }
   }
 }

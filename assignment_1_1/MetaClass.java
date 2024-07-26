@@ -1,7 +1,7 @@
 public class MetaClass {
-  String name;
+  String displayName;
 
   public MetaClass(String nameToSet) {
-    name = nameToSet;
+    displayName = nameToSet;
   }
 }

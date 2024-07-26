@@ -1,37 +1,10 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 
 public class TaskRepo {
-  public String getTask() throws IOException {
-    String filter = "!(@Routine) & today & !##Clients & !##Freelancing &  !##University & !(@Work)";
-    // String filter = "today";
-    String encodedFilter = URLEncoder.encode(filter, StandardCharsets.UTF_8.toString());
-
-    URL url = new URL("https://api.todoist.com/rest/v2/tasks?filter=" + encodedFilter);
-    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-    connection.setRequestMethod("GET");
-
-    String token = System.getenv("TODOIST_API_KEY");
-    connection.setRequestProperty("Authorization", "Bearer " + token);
-
-    InputStream inputStream = connection.getInputStream();
-    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-    StringBuilder responseBuilder = new StringBuilder();
-
-    String responseLine = bufferedReader.readLine();
-    while (responseLine != null) {
-      responseBuilder.append(responseLine);
-      responseLine = bufferedReader.readLine();
-    }
-
-    bufferedReader.close();
-    connection.disconnect();
-    return responseBuilder.toString();
+  public Task[] getTasks() {
+    Task task1 = new Task("Task 1", LocalDate.now());
+    Task task2 = new Task("Task 2", LocalDate.now());
+    Task[] tasks = { task1, task2 };
+    return tasks;
   }
 }
