@@ -1,2 +1,5 @@
 *.class
 JSON-java
+
+dist
+dist.zip
