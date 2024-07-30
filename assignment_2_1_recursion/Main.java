@@ -16,13 +16,16 @@ public class Main {
   }
 
   // TODO: Test with empty array
-  private static int recursivelyFindMinNumber(int[] numbers) {
+  private static int recursivelyFindMinNumber(int[] numbers) throws Exception {
+    if (numbers.length == 0)
+      throw new Exception("No items in the array.");
+
     int firstNumber = numbers[0];
     return getMinNumber(firstNumber, numbers, 0);
   }
 
-  public static void main(String[] args) {
-    int numbers[] = { 5, 9, 1, 38, -322, 8383482 };
+  public static void main(String[] args) throws Exception {
+    int numbers[] = {};
     int min = recursivelyFindMinNumber(numbers);
     System.out.println("min: " + min);
   }
