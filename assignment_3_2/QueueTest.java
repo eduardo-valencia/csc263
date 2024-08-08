@@ -16,7 +16,7 @@ class QueueTest {
     }
 
     @org.junit.jupiter.api.Test
-    @org.junit.jupiter.api.DisplayName("It gets the last item, even when there are multiple items")
+    @org.junit.jupiter.api.DisplayName("It removes the first item")
     public void remove() {
         Queue<String> queue = new Assignment_3_2_Main().queue;
         String value = "value";

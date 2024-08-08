@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Stack;
-import java.util.Queue;
+import java.util.*;
 
 public class Assignment_3_2_Main {
   public LinkedList<String> linkedList = new LinkedList<>();
@@ -11,6 +8,8 @@ public class Assignment_3_2_Main {
   public Stack<String> stack = new Stack<>();
 
   public Queue<String> queue = new LinkedList<>();
+
+  public HashSet<String> hashSet = new HashSet<>();
 
   public Assignment_3_2_Main() {
 //    this.arrayList.addLast("Unknown");
