@@ -11,13 +11,8 @@ public class Assignment_3_2_Main {
 
   public HashSet<String> hashSet = new HashSet<>();
 
-  public Assignment_3_2_Main() {
-//    this.arrayList.addLast("Unknown");
-  }
-
-
   public static void main(String[] args) {
-    Assignment_3_2_Main mainClass = new Assignment_3_2_Main();
+    new Assignment_3_2_Main();
     System.out.println("Successfully created data structures.");
   }
 
