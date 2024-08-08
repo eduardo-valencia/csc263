@@ -2,6 +2,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LinkedListTest {
 
+    /**
+     * We test adding items
+     */
     @org.junit.jupiter.api.Test
     @org.junit.jupiter.api.DisplayName("It inserts the item at the beginning")
     public void addFirst() {
@@ -12,6 +15,9 @@ class LinkedListTest {
         assertEquals(firstNode, value);
     }
 
+    /**
+     * We test that getFirst returns the correct item when there's multiple items
+     */
     @org.junit.jupiter.api.Test
     @org.junit.jupiter.api.DisplayName("It gets the first item, even when there are multiple items")
     public void getFirst() {
