@@ -19,7 +19,7 @@ public class Assignment_5_1_Main {
      */
     bst.showValues();
 
-    System.out.println("");
+    System.out.println("------\n");
   }
 
   /**
@@ -52,8 +52,6 @@ public class Assignment_5_1_Main {
       System.out.println("Successfully found a node with a value of " + nodeWithValue.value.toString() + ".");
 
     }
-
-    System.out.println("");
   }
 
   /**
