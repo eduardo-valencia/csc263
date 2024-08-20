@@ -1,16 +1,35 @@
 public class BinarySearchTree<Value extends Comparable<Value>> {
+  /**
+   * The root
+   */
   Node<Value> mainNode = null;
 
+  /**
+   * Adds a value to the tree
+   */
   public void addValue(Value value) {
+    /**
+     * We create a node with the value
+     */
     Node<Value> newNode = new Node<Value>(value);
+
+    /**
+     * Adds a node with the value to the mainNode
+     */
     if (this.mainNode != null)
       this.mainNode.addNode(newNode);
+    /**
+     * If the mainNode is null, we can just set it to a node with the value
+     */
     else
       this.mainNode = newNode;
   }
 
+  /**
+   * Finds a value in the tree. Returns the node with the value.
+   */
   public Node<Value> find(Value value) {
-    Node<Value> nodeToSearch = new Node<Value>(value);
+    Node<Value> nodeToSearch = this.mainNode;
 
     while (nodeToSearch != null) {
       int diff = nodeToSearch.value.compareTo(value);
