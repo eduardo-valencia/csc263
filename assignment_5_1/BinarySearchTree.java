@@ -25,10 +25,22 @@ public class BinarySearchTree<Value extends Comparable<Value>> {
     return nodeToSearch;
   }
 
+  private void printNodeSide(Node<Value> node, String side) {
+    String valueToPrint = "null";
+    if (node != null)
+      valueToPrint = node.value.toString();
+    System.out.println(side + ": " + valueToPrint);
+  }
+
   private void printFromNode(Node<Value> node) {
     if (node == null)
       return;
+
     System.out.println("Value: " + node.value.toString());
+    this.printNodeSide(node.leftNode, "Left");
+    this.printNodeSide(node.rightNode, "Right");
+    System.out.println("");
+
     this.printFromNode(node.leftNode);
     this.printFromNode(node.rightNode);
   }
