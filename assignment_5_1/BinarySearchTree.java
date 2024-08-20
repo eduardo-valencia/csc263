@@ -1,10 +1,11 @@
-public class BinarySearchTree<Value> {
+public class BinarySearchTree<Value extends Comparable<Value>> {
   Node<Value> mainNode = null;
 
-  public void addValue(Comparable<Value> value) {
+  public void addValue(Value value) {
     Node<Value> newNode = new Node<Value>(value);
-    if (this.mainNode)
-      return this.mainNode.addNode(value);
-    this.mainNode = newNode;
+    if (this.mainNode != null)
+      this.mainNode.addNode(newNode);
+    else
+      this.mainNode = newNode;
   }
 }
