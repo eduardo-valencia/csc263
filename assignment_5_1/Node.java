@@ -1,9 +1,9 @@
-public class Node<Value> {
-  public Comparable<Value> value;
+public class Node<Value extends Comparable<Value>> {
+  public Value value;
   public Node<Value> leftNode;
   public Node<Value> rightNode;
 
-  public Node(Comparable<Value> value) {
+  public Node(Value value) {
     this.value = value;
     this.leftNode = null;
     this.rightNode = null;
