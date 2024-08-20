@@ -1,6 +1,15 @@
+/**
+ * A data structure for storing the tree's values
+ */
 public class Node<Value extends Comparable<Value>> {
   public Value value;
+  /**
+   * Will have values less than the node's value
+   */
   public Node<Value> leftNode;
+  /**
+   * Will have values > than the node's value
+   */
   public Node<Value> rightNode;
 
   public Node(Value value) {
@@ -9,14 +18,19 @@ public class Node<Value extends Comparable<Value>> {
     this.rightNode = null;
   }
 
+  /**
+   * Adds a node to the left side of the tree
+   */
   private void addNodeToLeft(Node<Value> insertee) {
-    // TODO: Check this if/else statement works
     if (this.leftNode != null)
       this.leftNode.addNode(insertee);
     else
       this.leftNode = insertee;
   }
 
+  /**
+   * Adds a node to the right side of the tree
+   */
   private void addNodeToRight(Node<Value> insertee) {
     if (this.rightNode != null)
       this.rightNode.addNode(insertee);
@@ -24,12 +38,25 @@ public class Node<Value extends Comparable<Value>> {
       this.rightNode = insertee;
   }
 
+  /**
+   * Adds a node on either the left or right side. See the definitions of
+   * "leftNode" and "rightNode" for more info.
+   */
   public void addNode(Node<Value> insertee) {
+    /**
+     * Gets the diff
+     */
     int diff = insertee.value.compareTo(this.value);
+
+    /**
+     * If the new value is less than the parent node's value, add to left
+     */
     if (diff < 0)
       this.addNodeToLeft(insertee);
     else
-      // TODO: Is this what should happen if the values are equal?
+      /**
+       * Otherwise, add to right
+       */
       this.addNodeToRight(insertee);
   }
 }
