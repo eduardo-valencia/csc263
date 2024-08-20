@@ -32,7 +32,7 @@ public class BinarySearchTree<Value extends Comparable<Value>> {
     Node<Value> nodeToSearch = this.mainNode;
 
     while (nodeToSearch != null) {
-      int diff = nodeToSearch.value.compareTo(value);
+      int diff = value.compareTo(nodeToSearch.value);
       if (diff == 0)
         return nodeToSearch;
       else if (diff < 0)
