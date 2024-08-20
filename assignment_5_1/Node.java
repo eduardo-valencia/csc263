@@ -1,7 +1,7 @@
 public class Node<Value> {
   public Comparable<Value> value;
-  public Node<Comparable<Value>> leftNode;
-  public Node<Comparable<Value>> rightNode;
+  public Node<Value> leftNode;
+  public Node<Value> rightNode;
 
   public Node(Comparable<Value> value) {
     this.value = value;
@@ -9,7 +9,7 @@ public class Node<Value> {
     this.rightNode = null;
   }
 
-  private void addNodeToLeft(Node<Comparable<Value>> insertee) {
+  private void addNodeToLeft(Node<Value> insertee) {
     // TODO: Check this if/else statement works
     if (this.leftNode != null)
       this.leftNode.addNode(insertee);
@@ -17,16 +17,19 @@ public class Node<Value> {
       this.leftNode = insertee;
   }
 
-  private void addNodeToRight(Node<Comparable<Value>> insertee) {
+  private void addNodeToRight(Node<Value> insertee) {
     if (this.rightNode != null)
       this.rightNode.addNode(insertee);
     else
       this.rightNode = insertee;
   }
 
-  public void addNode(Node<Comparable<Value>> insertee) {
+  public void addNode(Node<Value> insertee) {
     int diff = insertee.value.compareTo(this.value);
     if (diff < 0)
       this.addNodeToLeft(insertee);
+    else
+      // TODO: Is this what should happen if the values are equal?
+      this.addNodeToRight(insertee);
   }
 }
