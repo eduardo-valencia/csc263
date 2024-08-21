@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.stream.Stream;
+
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TaskRepo extends TaskRepoAbstraction {
@@ -14,16 +16,25 @@ public class TaskRepo extends TaskRepoAbstraction {
     return today.datesUntil(endDate);
   }
 
+  private File getFile() {
+    return new File("./tasks.json");
+  }
+
+
   @Override
   public ArrayList<ToDoTask> list() throws IOException {
     ObjectMapper objectMapper = new ObjectMapper();
-    InputStream inputStream = ArrayList.class.getResourceAsStream("./tasks.json");
-    return (ArrayList<ToDoTask>) objectMapper.readValue(inputStream, ArrayList.class);
+
+    TypeReference<ArrayList<ToDoTask>> typeRef = new TypeReference<ArrayList<ToDoTask>>() {};
+
+
+    File file = this.getFile();
+    return objectMapper.readValue(file, typeRef);
   }
 
   private void writeTasks(ArrayList<ToDoTask> tasks) throws IOException {
     ObjectMapper objectMapper = new ObjectMapper();
-    File file = new File("./tasks.json");
+    File file = this.getFile();
     objectMapper.writeValue(file, tasks);
   }
 
