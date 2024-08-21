@@ -51,7 +51,7 @@ public class TaskRepo extends TaskRepoAbstraction {
   private void generateForDate(int index, LocalDate date) {
     ToDoTask fields = new ToDoTask();
     fields.name = "Task " + index;
-    fields.dueDate = date;
+    fields.setDueDate(date);
     this.create(fields);
   }
 

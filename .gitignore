@@ -4,3 +4,4 @@ JSON-java
 dist
 dist.zip
 out
+/tasks.json
