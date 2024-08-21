@@ -1,41 +1,58 @@
+import java.io.File;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.stream.Stream;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class TaskRepo {
+public class TaskRepo extends TaskRepoAbstraction {
   private Stream<LocalDate> getDatesToGenTasksFor() {
     LocalDate today = LocalDate.now();
     LocalDate endDate = today.plusDays(3);
     return today.datesUntil(endDate);
   }
 
+  @Override
   public ArrayList<ToDoTask> list() {
-    return new ArrayList<ToDoTask>();
+    ObjectMapper objectMapper = new ObjectMapper();
+    InputStream inputStream = ToDoTask.class.getResourceAsStream("./tasks.json");
+    try {
+      return (ArrayList<ToDoTask>) objectMapper.readValue(inputStream, ArrayList.class);
+    } catch (Exception error) {
+      System.err.println(error.toString());
+      return new ArrayList<ToDoTask>();
+    }
   }
 
   private void writeTasks(ArrayList<ToDoTask> tasks) {
-
+    ObjectMapper objectMapper = new ObjectMapper();
+    File file = new File("./tasks.json");
+    try {
+      objectMapper.writeValue(file, tasks);
+    } catch (Exception error) {
+      System.err.println(error.toString());
+    }
   }
 
   private ToDoTask create(ToDoTask fields) {
     ArrayList<ToDoTask> tasks = this.list();
 
-    Task task = fields.clone();
-    task.id = tasks.length;
+    ToDoTask task = fields.clone();
+    task.id = tasks.size();
 
-    tasks.push(task);
+    tasks.add(task);
 
     this.writeTasks(tasks);
 
     return task;
   }
 
-  private ToDoTask generateForDate(int index, LocalDate date) {
+  private void generateForDate(int index, LocalDate date) {
     ToDoTask fields = new ToDoTask();
     fields.name = "Task " + index;
     fields.dueDate = date;
-    return this.create(fields);
+    this.create(fields);
   }
 
   private void createTasksForDate(Iterator<LocalDate> iterator, int index) {
