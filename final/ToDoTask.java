@@ -7,7 +7,7 @@ public class ToDoTask {
 
   public String dueDateString;
 
-  private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
   public LocalDate getDueDate() {
     if (dueDateString == null) return null;
@@ -24,7 +24,8 @@ public class ToDoTask {
     task.name = this.name;
 
     LocalDate dueDate = task.getDueDate();
-    task.setDueDate(dueDate);
+    // todo: Consider making a class just for the to-do fields to facilitate type-checking
+    if (dueDate != null) task.setDueDate(dueDate);
 
     return task;
   }

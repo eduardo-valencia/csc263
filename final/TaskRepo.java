@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,28 +15,19 @@ public class TaskRepo extends TaskRepoAbstraction {
   }
 
   @Override
-  public ArrayList<ToDoTask> list() {
+  public ArrayList<ToDoTask> list() throws IOException {
     ObjectMapper objectMapper = new ObjectMapper();
-    InputStream inputStream = ToDoTask.class.getResourceAsStream("./tasks.json");
-    try {
-      return (ArrayList<ToDoTask>) objectMapper.readValue(inputStream, ArrayList.class);
-    } catch (Exception error) {
-      System.err.println(error.toString());
-      return new ArrayList<ToDoTask>();
-    }
+    InputStream inputStream = ArrayList.class.getResourceAsStream("./tasks.json");
+    return (ArrayList<ToDoTask>) objectMapper.readValue(inputStream, ArrayList.class);
   }
 
-  private void writeTasks(ArrayList<ToDoTask> tasks) {
+  private void writeTasks(ArrayList<ToDoTask> tasks) throws IOException {
     ObjectMapper objectMapper = new ObjectMapper();
     File file = new File("./tasks.json");
-    try {
-      objectMapper.writeValue(file, tasks);
-    } catch (Exception error) {
-      System.err.println(error.toString());
-    }
+    objectMapper.writeValue(file, tasks);
   }
 
-  private ToDoTask create(ToDoTask fields) {
+  private void create(ToDoTask fields) throws IOException {
     ArrayList<ToDoTask> tasks = this.list();
 
     ToDoTask task = fields.clone();
@@ -44,18 +36,16 @@ public class TaskRepo extends TaskRepoAbstraction {
     tasks.add(task);
 
     this.writeTasks(tasks);
-
-    return task;
   }
 
-  private void generateForDate(int index, LocalDate date) {
+  private void generateForDate(int index, LocalDate date) throws IOException {
     ToDoTask fields = new ToDoTask();
     fields.name = "Task " + index;
     fields.setDueDate(date);
     this.create(fields);
   }
 
-  private void createTasksForDate(Iterator<LocalDate> iterator, int index) {
+  private void createTasksForDate(Iterator<LocalDate> iterator, int index) throws IOException {
     LocalDate date = iterator.next();
     int tasksToGenerate = 4 - index;
     for (int count = 0; count < tasksToGenerate; count++) {
@@ -63,7 +53,7 @@ public class TaskRepo extends TaskRepoAbstraction {
     }
   }
 
-  public void generateBatch() {
+  public void generateBatch() throws IOException {
     Stream<LocalDate> dates = this.getDatesToGenTasksFor();
     Iterator<LocalDate> iterator = dates.iterator();
     int index = 0;
