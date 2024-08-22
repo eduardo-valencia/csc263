@@ -60,18 +60,18 @@ public class TaskService extends TaskServiceAbstraction {
         this.repo.writeTasks(tasks);
     }
 
-    private void generateForDate(int index, LocalDate date) throws Exception {
+    private void generateForDate(LocalDate date, String name) throws Exception {
         TaskCreationFields fields = new TaskCreationFields();
-        fields.name = "Task " + index;
+        fields.name = name;
         fields.dueDate = date;
         this.repo.create(fields);
     }
 
-    private void createTasksForDate(Iterator<LocalDate> iterator, int index) throws Exception {
+    private void createTasksForDate(Iterator<LocalDate> iterator, String[] names) throws Exception {
         LocalDate date = iterator.next();
-        int tasksToGenerate = 4 - index;
-        for (int count = 0; count < tasksToGenerate; count++) {
-            this.generateForDate(index, date);
+
+        for (String name : names) {
+            this.generateForDate(date, name);
         }
     }
 
@@ -84,11 +84,9 @@ public class TaskService extends TaskServiceAbstraction {
     public void generateBatch() throws Exception {
         Stream<LocalDate> dates = this.getDatesToGenTasksFor();
         Iterator<LocalDate> iterator = dates.iterator();
-        int index = 0;
 
-        while (iterator.hasNext()) {
-            this.createTasksForDate(iterator, index);
-            index++;
-        }
+        this.createTasksForDate(iterator, new String[]{"Task 1", "Task 2", "Task 3"});
+        this.createTasksForDate(iterator, new String[]{"Feed dogs"});
+        this.createTasksForDate(iterator, new String[]{"Do homework", "Buy groceries", "Do work", "Run"});
     }
 }
