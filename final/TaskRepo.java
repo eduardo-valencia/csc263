@@ -44,7 +44,7 @@ public class TaskRepo extends TaskRepoAbstraction {
 
   }
 
-  private void writeTasks(ArrayList<ToDoTask> tasks) throws IOException {
+  public void writeTasks(ArrayList<ToDoTask> tasks) throws IOException {
     ObjectMapper objectMapper = new ObjectMapper();
     File file = this.getFile();
     objectMapper.writeValue(file, tasks);
