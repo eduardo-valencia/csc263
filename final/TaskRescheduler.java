@@ -2,14 +2,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class TaskRescheduler {
-    private final ToDoTask updatedTask;
 
     private final ToDoTask originalTask;
 
     private final TaskService service = new TaskService();
 
     public TaskRescheduler(ToDoTask task) throws Exception {
-        this.updatedTask = task.cloneTask();
         this.originalTask = task.cloneTask();
     }
 
@@ -22,18 +20,19 @@ public class TaskRescheduler {
         ArrayList<ToDoTask> tasks = this.service.list(date);
         int MAX_TASKS_PER_DAY = 3;
         if (tasks.size() >= MAX_TASKS_PER_DAY) this.continueTryingToReschedule(date);
-        else this.service.updateDueDate(this.updatedTask.getId(), date);
+        else this.service.updateDueDate(this.originalTask.getId(), date);
     }
 
-    private void logTask() {
+    private void logTask() throws Exception {
+        ToDoTask updatedTask = this.service.getById(this.originalTask.getId());
         String name = updatedTask.getName();
         String originalDueDate = originalTask.getDueDateString();
-        System.out.println(name + " rescheduled from " + originalDueDate + " to " + updatedTask.getDueDateString());
+        String newDueDate = updatedTask.getDueDateString();
+        System.out.println(name + " rescheduled from " + originalDueDate + " to " + newDueDate);
     }
 
-    // TODO: Make sure we call this with today + 1
-    public void reschedule(LocalDate after) throws Exception {
-        this.tryReschedulingTaskForDate(after);
+    public void reschedule(LocalDate dateToTryReschedulingFor) throws Exception {
+        this.tryReschedulingTaskForDate(dateToTryReschedulingFor);
         // TODO: Should we be updating by ref?
         this.logTask();
     }
