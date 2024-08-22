@@ -2,49 +2,53 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class ToDoTask {
-  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-  private final int id;
+    private final int id;
 
-  public int getId() {
-    return this.id;
-  }
+    public int getId() {
+        return this.id;
+    }
 
-  private final String name;
+    private final String name;
 
-  public String getName() {
-    return this.name;
-  }
+    public String getName() {
+        return this.name;
+    }
 
-  private String dueDateString;
+    private String dueDateString;
 
-  private String getDueDateString(TaskCreationFields fields) {
-    if (fields.dueDate != null) return formatter.format(fields.dueDate);
-    return fields.dueDateString;
-  }
+    public String getDueDateString() {
+        return this.dueDateString;
+    }
 
-  public ToDoTask(TaskCreationFields fields) throws Exception {
-    fields.validate();
-    this.id = fields.id;
-    this.name = fields.name;
-    this.dueDateString = this.getDueDateString(fields);
-  }
+    private String getDueDateStringToSet(TaskCreationFields fields) {
+        if (fields.dueDate != null) return formatter.format(fields.dueDate);
+        return fields.dueDateString;
+    }
 
-  public LocalDate getDueDate() {
-    return LocalDate.parse(this.dueDateString, formatter);
-  }
+    public ToDoTask(TaskCreationFields fields) throws Exception {
+        fields.validate();
+        this.id = fields.id;
+        this.name = fields.name;
+        this.dueDateString = this.getDueDateStringToSet(fields);
+    }
 
-  public void setDueDate(LocalDate newDueDate) throws Exception {
-    if (newDueDate == null) throw new Exception("Invalid new due date");
-    this.dueDateString = formatter.format(newDueDate);
-  }
+    public LocalDate parseDueDate() {
+        return LocalDate.parse(this.dueDateString, formatter);
+    }
 
-  public ToDoTask cloneTask() throws Exception {
-    TaskCreationFields fields = new TaskCreationFields();
-    fields.id = this.id;
-    fields.name = this.name;
-    fields.dueDate = this.getDueDate();
+    public void setDueDate(LocalDate newDueDate) throws Exception {
+        if (newDueDate == null) throw new Exception("Invalid new due date");
+        this.dueDateString = formatter.format(newDueDate);
+    }
 
-    return new ToDoTask(fields);
-  }
+    public ToDoTask cloneTask() throws Exception {
+        TaskCreationFields fields = new TaskCreationFields();
+        fields.id = this.id;
+        fields.name = this.name;
+        fields.dueDate = this.parseDueDate();
+
+        return new ToDoTask(fields);
+    }
 }
