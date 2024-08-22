@@ -20,16 +20,28 @@ public class TaskRepo extends TaskRepoAbstraction {
     return new File("./tasks.json");
   }
 
+  private ToDoTask createTaskInstanceFromFields(TaskCreationFields fields) throws Exception {
+    return new ToDoTask(fields);
+  }
+
+  private ArrayList<ToDoTask> convertFieldsToTasks(ArrayList<TaskCreationFields> fieldsList) throws Exception {
+    ArrayList<ToDoTask> tasks = new ArrayList<>();
+    for (TaskCreationFields fields : fieldsList) {
+        ToDoTask task = new ToDoTask(fields);
+        tasks.add(task);
+    }
+    return tasks;
+  }
+
 
   @Override
-  public ArrayList<ToDoTask> list() throws IOException {
+  public ArrayList<ToDoTask> list() throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
-
-    TypeReference<ArrayList<ToDoTask>> typeRef = new TypeReference<ArrayList<ToDoTask>>() {};
-
-
+    TypeReference<ArrayList<TaskCreationFields>> typeRef = new TypeReference<>() {};
     File file = this.getFile();
-    return objectMapper.readValue(file, typeRef);
+    ArrayList<TaskCreationFields> fieldsList = objectMapper.readValue(file, typeRef);
+    return this.convertFieldsToTasks(fieldsList);
+
   }
 
   private void writeTasks(ArrayList<ToDoTask> tasks) throws IOException {
@@ -38,25 +50,26 @@ public class TaskRepo extends TaskRepoAbstraction {
     objectMapper.writeValue(file, tasks);
   }
 
-  private void create(ToDoTask fields) throws IOException {
+  private void create(TaskCreationFields fields) throws Exception {
     ArrayList<ToDoTask> tasks = this.list();
 
-    ToDoTask task = fields.clone();
-    task.id = tasks.size();
+    // TODO: maybe clone this
+    fields.id = tasks.size();
+    ToDoTask task = new ToDoTask(fields);
 
     tasks.add(task);
 
     this.writeTasks(tasks);
   }
 
-  private void generateForDate(int index, LocalDate date) throws IOException {
-    ToDoTask fields = new ToDoTask();
+  private void generateForDate(int index, LocalDate date) throws Exception {
+    TaskCreationFields fields = new TaskCreationFields();
     fields.name = "Task " + index;
-    fields.setDueDate(date);
+    fields.dueDate = date;
     this.create(fields);
   }
 
-  private void createTasksForDate(Iterator<LocalDate> iterator, int index) throws IOException {
+  private void createTasksForDate(Iterator<LocalDate> iterator, int index) throws Exception {
     LocalDate date = iterator.next();
     int tasksToGenerate = 4 - index;
     for (int count = 0; count < tasksToGenerate; count++) {
@@ -64,7 +77,7 @@ public class TaskRepo extends TaskRepoAbstraction {
     }
   }
 
-  public void generateBatch() throws IOException {
+  public void generateBatch() throws Exception {
     Stream<LocalDate> dates = this.getDatesToGenTasksFor();
     Iterator<LocalDate> iterator = dates.iterator();
     int index = 0;

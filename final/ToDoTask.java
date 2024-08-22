@@ -2,31 +2,49 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class ToDoTask {
-  public int id;
-  public String name;
-
-  public String dueDateString;
-
   private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+  private final int id;
+
+  public int getId() {
+    return this.id;
+  }
+
+  private final String name;
+
+  public String getName() {
+    return this.name;
+  }
+
+  private String dueDateString;
+
+  private String getDueDateString(TaskCreationFields fields) {
+    if (fields.dueDate != null) return formatter.format(fields.dueDate);
+    return fields.dueDateString;
+  }
+
+  public ToDoTask(TaskCreationFields fields) throws Exception {
+    fields.validate();
+    this.id = fields.id;
+    this.name = fields.name;
+    this.dueDateString = this.getDueDateString(fields);
+  }
+
   public LocalDate getDueDate() {
-    if (dueDateString == null) return null;
     return LocalDate.parse(this.dueDateString, formatter);
   }
 
-  public void setDueDate(LocalDate newDueDate) {
+  public void setDueDate(LocalDate newDueDate) throws Exception {
+    if (newDueDate == null) throw new Exception("Invalid new due date");
     this.dueDateString = formatter.format(newDueDate);
   }
 
-  public ToDoTask clone() {
-    ToDoTask task = new ToDoTask();
-    task.id = this.id;
-    task.name = this.name;
+  public ToDoTask cloneTask() throws Exception {
+    TaskCreationFields fields = new TaskCreationFields();
+    fields.id = this.id;
+    fields.name = this.name;
+    fields.dueDate = this.getDueDate();
 
-    LocalDate dueDate = task.getDueDate();
-    // todo: Consider making a class just for the to-do fields to facilitate type-checking
-    if (dueDate != null) task.setDueDate(dueDate);
-
-    return task;
+    return new ToDoTask(fields);
   }
 }
