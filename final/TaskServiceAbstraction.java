@@ -1,11 +1,8 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class TaskServiceAbstraction {
-    public ArrayList<ToDoTask> list() throws Exception {
-        return new ArrayList<>();
-    }
+public abstract class TaskServiceAbstraction {
+    public abstract ArrayList<ToDoTask> list() throws Exception;
 
-    public void updateDueDate() {
-
-    }
+    public abstract void updateDueDate(int id, LocalDate dueDate) throws Exception;
 }
