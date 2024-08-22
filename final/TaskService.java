@@ -73,7 +73,7 @@ public class TaskService extends TaskServiceAbstraction {
         }
     }
 
-    private Stream<LocalDate> getDatesToGenTasksFor() {
+    public Stream<LocalDate> getDatesToGenTasksFor() {
         LocalDate today = LocalDate.now();
         LocalDate endDate = today.plusDays(3);
         return today.datesUntil(endDate);
