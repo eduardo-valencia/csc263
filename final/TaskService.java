@@ -67,9 +67,7 @@ public class TaskService extends TaskServiceAbstraction {
         this.repo.create(fields);
     }
 
-    private void createTasksForDate(Iterator<LocalDate> iterator, String[] names) throws Exception {
-        LocalDate date = iterator.next();
-
+    private void createTasksForDate(LocalDate date, String[] names) throws Exception {
         for (String name : names) {
             this.generateForDate(date, name);
         }
@@ -85,8 +83,13 @@ public class TaskService extends TaskServiceAbstraction {
         Stream<LocalDate> dates = this.getDatesToGenTasksFor();
         Iterator<LocalDate> iterator = dates.iterator();
 
-        this.createTasksForDate(iterator, new String[]{"Task 1", "Task 2", "Task 3"});
-        this.createTasksForDate(iterator, new String[]{"Feed dogs"});
-        this.createTasksForDate(iterator, new String[]{"Do homework", "Buy groceries", "Do work", "Run"});
+        LocalDate today = iterator.next();
+        this.createTasksForDate(today, new String[]{"Task 1", "Task 2", "Task 3"});
+
+        LocalDate tomorrow = iterator.next();
+        this.createTasksForDate(tomorrow, new String[]{"Feed dogs"});
+
+        LocalDate in2Days = iterator.next();
+        this.createTasksForDate(in2Days, new String[]{"Do homework", "Buy groceries", "Do work", "Run"});
     }
 }

@@ -33,7 +33,6 @@ public class TaskRescheduler {
 
     public void reschedule(LocalDate dateToTryReschedulingFor) throws Exception {
         this.tryReschedulingTaskForDate(dateToTryReschedulingFor);
-        // TODO: Should we be updating by ref?
         this.logTask();
     }
 }

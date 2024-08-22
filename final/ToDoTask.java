@@ -43,7 +43,6 @@ public class ToDoTask {
         this.dueDateString = formatter.format(newDueDate);
     }
 
-    // Todo: Check we cloned this right
     public ToDoTask cloneTask() throws Exception {
         TaskCreationFields fields = new TaskCreationFields();
         fields.id = this.id;
