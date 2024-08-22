@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -11,16 +12,17 @@ public class Final {
 
   private ArrayList<Integer> getTaskIdsToReschedule() {
     ArrayList<Integer> taskIds = new ArrayList<>();
-    taskIds.add(0);
     taskIds.add(1);
     taskIds.add(2);
+    taskIds.add(3);
     return taskIds;
   }
 
   private void rescheduleTasks() throws Exception {
+    this.showSection("Rescheduled Tasks");
     ArrayList<Integer> taskIds = this.getTaskIdsToReschedule();
     this.reschedulerService.rescheduleTasks(taskIds);
-    System.out.println();
+    System.out.println("\nTasks successfully rescheduled!");
   }
 
   private void logTask(ToDoTask task) {
@@ -44,7 +46,7 @@ public class Final {
 
   private void logTasksForDate(LocalDate date) throws Exception {
     String formattedDate = this.formatDate(date);
-    System.out.println("Date: " + formattedDate);
+    System.out.println("[" + formattedDate + "]:");
     this.logTasks(date);
     System.out.println();
   }
@@ -60,10 +62,16 @@ public class Final {
     });
   }
 
-  private void clearScreen() {
-    // From https://www.javatpoint.com/how-to-clear-screen-in-java
-    System.out.print("\033[H\033[2J");
-    System.out.flush();
+  private void showDivider() {
+    System.out.println("------------------");
+  }
+
+  private void showSection(String title) {
+    System.out.println("\n\n\n");
+    this.showDivider();
+    System.out.println(title);
+    this.showDivider();
+    System.out.println();
   }
 
   private void promptToContinue(String text) {
@@ -71,7 +79,6 @@ public class Final {
     System.out.println(text == null ? "Press ENTER to continue.\n" : text);
     scanner.nextLine();
     System.out.println();
-    this.clearScreen();
   }
 
   private void showIntro() {
@@ -93,6 +100,7 @@ public class Final {
   }
 
   private void showOriginalTasks() {
+    this.showSection("Tasks");
     System.out.println("The following shows your list of tasks, grouped by day.\n");
     this.logTasksForDates();
     this.promptToContinue("Press ENTER to automatically reschedule these tasks for the next available day.");
@@ -105,7 +113,6 @@ public class Final {
     this.showIntro();
     this.showOriginalTasks();
     this.rescheduleTasks();
-
   }
 
   public static void main(String[] args) throws Exception {

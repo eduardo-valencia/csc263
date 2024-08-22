@@ -45,8 +45,7 @@ public class TaskRepo extends TaskRepoAbstraction {
   public void create(TaskCreationFields fields) throws Exception {
     ArrayList<ToDoTask> tasks = this.list();
 
-    // TODO: maybe clone this
-    fields.id = tasks.size();
+    fields.id = tasks.size() + 1;
     ToDoTask task = new ToDoTask(fields);
 
     tasks.add(task);
