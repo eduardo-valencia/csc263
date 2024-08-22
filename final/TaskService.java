@@ -27,18 +27,22 @@ public class TaskService extends TaskServiceAbstraction {
         return filteredTasks;
     }
 
-    public ToDoTask getById(int id) throws Exception {
-        ArrayList<ToDoTask> tasks = this.list();
+    private ToDoTask getById(ArrayList<ToDoTask> tasks, int id) throws Exception {
         for (ToDoTask task : tasks) {
             if (task.getId() == id) return task;
         }
-        throw new Exception("Task " + id + " not found.")
+        throw new Exception("Task " + id + " not found.");
+    }
+
+    private ArrayList<ToDoTask> updateTaskDueDateAndGetTasks(int id, LocalDate dueDate) throws Exception {
+        ArrayList<ToDoTask> tasks = this.list();
+        ToDoTask task = this.getById(tasks, id);
+        task.setDueDate(dueDate);
+        return tasks;
     }
 
     public void updateDueDate(int id, LocalDate dueDate) throws Exception {
-        ToDoTask task = this.getById(id);
-        task.setDueDate(dueDate);
-
-
+        ArrayList<ToDoTask> tasks = this.updateTaskDueDateAndGetTasks(id, dueDate);
+        this.repo.writeTasks(tasks);
     }
 }
