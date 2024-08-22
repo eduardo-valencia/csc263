@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 public class TaskService extends TaskServiceAbstraction {
     private final TaskRepo repo = new TaskRepo();
@@ -59,7 +60,35 @@ public class TaskService extends TaskServiceAbstraction {
         this.repo.writeTasks(tasks);
     }
 
+    private void generateForDate(int index, LocalDate date) throws Exception {
+        TaskCreationFields fields = new TaskCreationFields();
+        fields.name = "Task " + index;
+        fields.dueDate = date;
+        this.repo.create(fields);
+    }
+
+    private void createTasksForDate(Iterator<LocalDate> iterator, int index) throws Exception {
+        LocalDate date = iterator.next();
+        int tasksToGenerate = 4 - index;
+        for (int count = 0; count < tasksToGenerate; count++) {
+            this.generateForDate(index, date);
+        }
+    }
+
+    private Stream<LocalDate> getDatesToGenTasksFor() {
+        LocalDate today = LocalDate.now();
+        LocalDate endDate = today.plusDays(3);
+        return today.datesUntil(endDate);
+    }
+
     public void generateBatch() throws Exception {
-        this.repo.generateBatch();
+        Stream<LocalDate> dates = this.getDatesToGenTasksFor();
+        Iterator<LocalDate> iterator = dates.iterator();
+        int index = 0;
+
+        while (iterator.hasNext()) {
+            this.createTasksForDate(iterator, index);
+            index++;
+        }
     }
 }
