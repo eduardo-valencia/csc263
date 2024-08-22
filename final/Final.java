@@ -23,13 +23,6 @@ public class Final {
     System.out.println();
   }
 
-  private void promptToContinue() {
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("Press ENTER to continue.\n");
-    scanner.nextLine();
-    System.out.println();
-  }
-
   private void logTask(ToDoTask task) {
     int id = task.getId();
     String name = task.getName();
@@ -67,11 +60,52 @@ public class Final {
     });
   }
 
+  private void clearScreen() {
+    // From https://www.javatpoint.com/how-to-clear-screen-in-java
+    System.out.print("\033[H\033[2J");
+    System.out.flush();
+  }
+
+  private void promptToContinue(String text) {
+    Scanner scanner = new Scanner(System.in);
+    System.out.println(text == null ? "Press ENTER to continue.\n" : text);
+    scanner.nextLine();
+    System.out.println();
+    this.clearScreen();
+  }
+
+  private void showIntro() {
+    System.out.println("Title: Enhanced Rescheduler\n" +
+            "\n" +
+            "This application allows you to reschedule today’s tasks automatically  This is useful if an unexpected" +
+            "\n" +
+            "event arises, and you need to postpone today’s tasks for another day.\n" +
+            "\n" +
+            "This program features intelligent task distribution. Instead of only rescheduling tasks for tomorrow,\ntasks are distributed across multiple days." +
+            "\n\n" +
+            "Specifically, the program will reschedule each task for the next non-busy day. A “non-busy day” is\ncurrently defined as a day with less than 3 tasks.\n" +
+            "\n" +
+            "Instructions:\n" +
+            "\n" +
+            "- Follow along with the application’s prompts.\n" +
+            "- You can quit the application at any time by pressing CTRL + C." + "\n");
+    this.promptToContinue("Press ENTER to see your list of tasks.");
+  }
+
+  private void showOriginalTasks() {
+    System.out.println("The following shows your list of tasks, grouped by day.\n");
+    this.logTasksForDates();
+    this.promptToContinue("Press ENTER to automatically reschedule these tasks for the next available day.");
+  }
+
   public void run() throws Exception {
     this.taskService.resetTasks();
     this.taskService.generateBatch();
+
+    this.showIntro();
+    this.showOriginalTasks();
     this.rescheduleTasks();
-    this.logTasksForDates();
+
   }
 
   public static void main(String[] args) throws Exception {
