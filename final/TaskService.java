@@ -1,9 +1,10 @@
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class TaskService extends TaskServiceAbstraction {
-    private TaskRepo repo = new TaskRepo();
+    private final TaskRepo repo = new TaskRepo();
 
     public ArrayList<ToDoTask> list() throws Exception {
         return this.repo.list();
@@ -27,7 +28,7 @@ public class TaskService extends TaskServiceAbstraction {
         return filteredTasks;
     }
 
-    private ToDoTask getById(ArrayList<ToDoTask> tasks, int id) throws Exception {
+    private ToDoTask getFromListById(ArrayList<ToDoTask> tasks, int id) throws Exception {
         for (ToDoTask task : tasks) {
             if (task.getId() == id) return task;
         }
@@ -36,7 +37,7 @@ public class TaskService extends TaskServiceAbstraction {
 
     private ArrayList<ToDoTask> updateTaskDueDateAndGetTasks(int id, LocalDate dueDate) throws Exception {
         ArrayList<ToDoTask> tasks = this.list();
-        ToDoTask task = this.getById(tasks, id);
+        ToDoTask task = this.getFromListById(tasks, id);
         task.setDueDate(dueDate);
         return tasks;
     }
@@ -44,5 +45,19 @@ public class TaskService extends TaskServiceAbstraction {
     public void updateDueDate(int id, LocalDate dueDate) throws Exception {
         ArrayList<ToDoTask> tasks = this.updateTaskDueDateAndGetTasks(id, dueDate);
         this.repo.writeTasks(tasks);
+    }
+
+    public ToDoTask getById(int id) throws Exception {
+        ArrayList<ToDoTask> tasks = this.list();
+        return this.getFromListById(tasks, id);
+    }
+
+    public void resetTasks() throws IOException {
+        ArrayList<ToDoTask> tasks = new ArrayList<>();
+        this.repo.writeTasks(tasks);
+    }
+
+    public void generateBatch() throws Exception {
+        this.repo.generateBatch();
     }
 }
