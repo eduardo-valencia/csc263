@@ -12,10 +12,6 @@ public class TaskRepo extends TaskRepoAbstraction {
     return new File("./tasks.json");
   }
 
-  private ToDoTask createTaskInstanceFromFields(TaskCreationFields fields) throws Exception {
-    return new ToDoTask(fields);
-  }
-
   private ArrayList<ToDoTask> convertFieldsToTasks(ArrayList<TaskCreationFields> fieldsList) throws Exception {
     ArrayList<ToDoTask> tasks = new ArrayList<>();
     for (TaskCreationFields fields : fieldsList) {
