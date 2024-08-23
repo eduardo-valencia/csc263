@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -22,7 +23,8 @@ public class Final {
     this.showSection("Rescheduled Tasks");
     ArrayList<Integer> taskIds = this.getTaskIdsToReschedule();
     this.reschedulerService.rescheduleTasks(taskIds);
-    System.out.println("\nTasks successfully rescheduled!");
+    System.out.println("\nTasks successfully rescheduled!\n");
+    this.promptToContinue(null);
   }
 
   private void logTask(ToDoTask task) {
@@ -39,6 +41,9 @@ public class Final {
 
   private void logTasks(LocalDate date) throws Exception {
     ArrayList<ToDoTask> tasks = this.taskService.list(date);
+
+    if (tasks.isEmpty()) System.out.println("None");
+
     for (ToDoTask task : tasks) {
       this.logTask(task);
     }
@@ -81,9 +86,20 @@ public class Final {
     System.out.println();
   }
 
+  private void showTitleDivider() {
+    System.out.println("--------------------------------");
+  }
+
+  private void showTitle() {
+    this.showTitleDivider();
+    System.out.println("Title: Enhanced Rescheduler");
+    this.showTitleDivider();
+    System.out.println();
+  }
+
   private void showIntro() {
-    System.out.println("Title: Enhanced Rescheduler\n" +
-            "\n" +
+    this.showTitle();
+    System.out.println(
             "This application allows you to reschedule today’s tasks automatically  This is useful if an unexpected" +
             "\n" +
             "event arises, and you need to postpone today’s tasks for another day.\n" +
@@ -106,13 +122,23 @@ public class Final {
     this.promptToContinue("Press ENTER to automatically reschedule these tasks for the next available day.");
   }
 
-  public void run() throws Exception {
+  private void showNewTasks() {
+    this.showSection("Updated Tasks");
+    System.out.println("The following shows the updated list of tasks.\n");
+    this.logTasksForDates();
+  }
+
+  private void reset() throws Exception {
     this.taskService.resetTasks();
     this.taskService.generateBatch();
+  }
 
+  public void run() throws Exception {
+    this.reset();
     this.showIntro();
     this.showOriginalTasks();
     this.rescheduleTasks();
+    this.showNewTasks();
   }
 
   public static void main(String[] args) throws Exception {
